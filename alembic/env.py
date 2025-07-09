@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+print("DEBUG ALEMBIC - DATABASE_URI:", os.getenv("DATABASE_URI"))
 
 from app.db import Base
 from app import models as _

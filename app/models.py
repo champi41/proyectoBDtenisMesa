@@ -14,10 +14,6 @@ inscripcion = Table("inscripcion", Base.metadata,
     Column("categoria_id", ForeignKey("categoria.id"), primary_key=True)
 )
 
-# NOTA IMPORTANTE: La definición de 'equipo_dobles' como objeto Table ha sido eliminada.
-# La clase declarativa 'EquipoDobles(Base)' es la forma correcta de definirla.
-# Si esta sección estaba descomentada, causaba el error "Table 'equipo_dobles' is already defined".
-
 class Categoria(Base):
     __tablename__ = "categoria"
     id = Column(Integer, primary_key=True)
@@ -124,7 +120,7 @@ class ResultadoSet(Base):
 class Grupo(Base):
     __tablename__ = "grupo"
     id = Column(Integer, primary_key=True)
-    nombre = Column(String, nullable=False)  # Ej: Grupo A, Grupo B
+    nombre = Column(String, nullable=False) 
     torneo_id = Column(Integer, ForeignKey("torneo.id"), nullable=False)
     categoria_id = Column(Integer, ForeignKey("categoria.id"), nullable=False)
 
@@ -159,5 +155,5 @@ class EquipoDobles(Base):
 inscripcion_dobles = Table("inscripcion_dobles", Base.metadata,
     Column("equipo_id", ForeignKey("equipo_dobles.id"), primary_key=True),
     Column("torneo_id", ForeignKey("torneo.id"), primary_key=True),
-    Column("categoria_id", ForeignKey("categoria.id"), primary_key=True)
+    Column("categoria_id", ForeignKey("categoria.id"), primary_key=True) 
 )
