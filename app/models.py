@@ -15,6 +15,7 @@ inscripcion = Table("inscripcion", Base.metadata,
 )
 
 class Categoria(Base):
+
     __tablename__ = "categoria"
     id = Column(Integer, primary_key=True)
     nombre = Column(String, unique=True, nullable=False)
@@ -48,8 +49,8 @@ class Jugador(Base):
     asociacion_id = Column(Integer, ForeignKey("asociacion.id"), nullable=True)
 
     asociacion = relationship("Asociacion", backref="jugadores")
-    categorias = relationship("Categoria", secondary=inscripcion, backref="jugadores")
-    torneos = relationship("Torneo", secondary=inscripcion, backref="jugadores")
+    categorias = relationship("Categoria", secondary=inscripcion, backref="jugadores_inscritos_categoria")
+    torneos = relationship("Torneo", secondary=inscripcion, backref="jugadores_inscritos_torneo")
 
 class Torneo(Base):
     __tablename__ = "torneo"
@@ -58,16 +59,18 @@ class Torneo(Base):
     fecha_inicio = Column(Date, nullable=False)
     fecha_fin = Column(Date, nullable=False)
     mesas_disponibles = Column(Integer, nullable=False)
+    fecha_inscripcion_inicio = Column(Date, nullable=False)
+    fecha_inscripcion_fin = Column(Date, nullable=False)
 
 class Partido(Base):
     __tablename__ = "partido"
     id = Column(Integer, primary_key=True)
-    tipo = Column(String, nullable=False)  # individual o dobles
+    tipo = Column(String, nullable=False) #"individual" o "dobles"
     torneo_id = Column(Integer, ForeignKey("torneo.id"), nullable=False)
     categoria_id = Column(Integer, ForeignKey("categoria.id"), nullable=False)
     horario = Column(DateTime, nullable=False)
     mesa = Column(Integer, nullable=False)
-    ronda = Column(String, nullable=True)  # octavos, Cuartos, ect.
+    ronda = Column(String, nullable=True) #octavos, cuartos, etc
     bye = Column(Boolean, default=False)
 
     torneo = relationship("Torneo", backref="partidos")
@@ -77,7 +80,7 @@ class Partido(Base):
     partido_ganador_id = Column(Integer, ForeignKey("partido.id"), nullable=True)  # siguiente partido al que avanza el ganador
     partido_ganador = relationship("Partido", remote_side=[id])
 
-    # para individuales
+    # Para individuale
     jugador1_id = Column(Integer, ForeignKey("jugador.id"), nullable=True)
     jugador2_id = Column(Integer, ForeignKey("jugador.id"), nullable=True)
 
@@ -119,14 +122,14 @@ class ResultadoSet(Base):
 class Grupo(Base):
     __tablename__ = "grupo"
     id = Column(Integer, primary_key=True)
-    nombre = Column(String, nullable=False) 
+    nombre = Column(String, nullable=False)  # grupo a, b, c,ect
     torneo_id = Column(Integer, ForeignKey("torneo.id"), nullable=False)
     categoria_id = Column(Integer, ForeignKey("categoria.id"), nullable=False)
 
     torneo = relationship("Torneo", backref="grupos")
     categoria = relationship("Categoria", backref="grupos")
 
-# Participantes en un grupo (individuales)
+# participantes en un grupo (individuales)
 grupo_participante = Table("grupo_participante", Base.metadata,
     Column("grupo_id", ForeignKey("grupo.id"), primary_key=True),
     Column("jugador_id", ForeignKey("jugador.id"), primary_key=True)
@@ -154,5 +157,5 @@ class EquipoDobles(Base):
 inscripcion_dobles = Table("inscripcion_dobles", Base.metadata,
     Column("equipo_id", ForeignKey("equipo_dobles.id"), primary_key=True),
     Column("torneo_id", ForeignKey("torneo.id"), primary_key=True),
-    Column("categoria_id", ForeignKey("categoria.id"), primary_key=True) 
+    Column("categoria_id", ForeignKey("categoria.id"), primary_key=True)
 )
