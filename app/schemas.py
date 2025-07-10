@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import List
 
 
-# Schemas para Jugador
+# schemas para jugador
 
 class JugadorBase(BaseModel):
     nombre: str
@@ -32,7 +32,7 @@ class JugadorOut(JugadorBase):
     class Config:
         orm_mode = True
 
-# Schemas para Torneo
+# schemas para torneo
 
 class TorneoBase(BaseModel):
     nombre: str
@@ -100,7 +100,7 @@ class AsociacionOut(AsociacionBase):
         orm_mode = True
 
 class PartidoBase(BaseModel):
-    tipo: str  # "individual" o "dobles"
+    tipo: str  # individual o dobles
     torneo_id: int
     categoria_id: int
     horario: datetime
@@ -157,7 +157,7 @@ class ResultadoSetOut(ResultadoSetBase):
     id: int
 
     class Config:
-        from_attributes = True  # usar en lugar de orm_mode en Pydantic v2
+        from_attributes = True  
 
 class InscripcionDobles(BaseModel):
     equipo_id: int
