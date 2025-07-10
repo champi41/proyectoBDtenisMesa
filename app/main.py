@@ -10,7 +10,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# Dependency para obtener sesión DB
+# dependencia para obtener sesión DB
 def get_db():
     db = SessionLocal()
     try:
@@ -262,8 +262,8 @@ def eliminar_inscripcion(jugador_id: int, torneo_id: int, categoria_id: int, db:
 @app.get("/inscripciones/")
 def listar_inscripciones(db: Session = Depends(get_db)):
     return crud.get_inscripciones(db)
-# INSCRIPCIONES DOBLES
 
+# INSCRIPCIONES DOBLES
 @app.post("/inscripcionesdobles/")
 def inscribir_equipo(inscripcion: schemas.InscripcionDobles, db: Session = Depends(get_db)):
     resultado = crud.create_inscripcion_dobles(db, inscripcion.equipo_id, inscripcion.torneo_id, inscripcion.categoria_id)
