@@ -3,7 +3,7 @@ from app import models, schemas
 from sqlalchemy.exc import IntegrityError
 from app.models import inscripcion_dobles
 
-# CRUD para Jugador
+# CRUD para jugador
 def get_jugador(db: Session, jugador_id: int):
     return db.query(models.Jugador).filter(models.Jugador.id == jugador_id).first()
 
@@ -35,7 +35,7 @@ def delete_jugador(db: Session, jugador_id: int):
     db.commit()
     return db_jugador
 
-# CRUD para Torneo
+#CRUD para torneo
 def get_torneo(db: Session, torneo_id: int):
     return db.query(models.Torneo).filter(models.Torneo.id == torneo_id).first()
 
@@ -67,7 +67,7 @@ def delete_torneo(db: Session, torneo_id: int):
     db.commit()
     return db_torneo
 
-# CRUD para Categoria
+#CRUD para categoria
 def get_categoria(db: Session, categoria_id: int):
     return db.query(models.Categoria).filter(models.Categoria.id == categoria_id).first()
 
@@ -99,7 +99,7 @@ def delete_categoria(db: Session, categoria_id: int):
     db.commit()
     return db_categoria
 
-# CRUD para Asociacion
+# CRUD para aasociacion
 def get_asociacion(db: Session, asociacion_id: int):
     return db.query(models.Asociacion).filter(models.Asociacion.id == asociacion_id).first()
 
@@ -131,7 +131,7 @@ def delete_asociacion(db: Session, asociacion_id: int):
     db.commit()
     return db_asociacion
 
-# CRUD para Partido
+#CRUD para partido
 def get_partido(db: Session, partido_id: int):
     return db.query(models.Partido).filter(models.Partido.id == partido_id).first()
 
@@ -139,7 +139,7 @@ def get_partidos(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Partido).offset(skip).limit(limit).all()
 
 def create_partido(db: Session, partido: schemas.PartidoCreate):
-    # Verificaciones básicas
+    # verificaciones simples
     if partido.tipo == "individual":
         jugador1 = db.query(models.Jugador).filter_by(id=partido.jugador1_id).first()
         jugador2 = db.query(models.Jugador).filter_by(id=partido.jugador2_id).first()
@@ -176,7 +176,7 @@ def delete_partido(db: Session, partido_id: int):
     db.commit()
     return db_partido
 
-# CRUD ResultadoSet
+#CRUD resultadoSet
 def create_resultado_set(db: Session, data: schemas.ResultadoSetCreate):
     resultado = models.ResultadoSet(**data.dict())
     db.add(resultado)
@@ -208,7 +208,7 @@ def delete_resultado_set(db: Session, resultado_id: int):
     db.commit()
     return resultado
 
-# CRUD para Grupo
+#CRUD para grupo
 def create_grupo(db: Session, grupo: schemas.GrupoCreate):
     nuevo = models.Grupo(**grupo.dict())
     db.add(nuevo)
@@ -236,7 +236,7 @@ def delete_grupo(db: Session, grupo_id: int):
         db.commit()
     return grupo
 
-# CRUD para EquipoDobles
+# CRUD para equipoDobles
 def create_equipo_dobles(db: Session, equipo: schemas.EquipoDoblesCreate):
     nuevo = models.EquipoDobles(**equipo.dict())
     db.add(nuevo)
@@ -258,7 +258,7 @@ def delete_equipo_dobles(db: Session, equipo_id: int):
     db.commit()
     return equipo
 
-# CRUD para Inscripción
+# CRUD para incripcion
 def create_inscripcion(db: Session, inscripcion: schemas.InscripcionCreate):
     existe = db.execute(
         models.inscripcion.select().where(
@@ -269,7 +269,7 @@ def create_inscripcion(db: Session, inscripcion: schemas.InscripcionCreate):
     ).fetchone()
 
     if existe:
-        return None  # Ya está inscrito
+        return None  # ya esta inscrito
 
     stmt = models.inscripcion.insert().values(**inscripcion.dict())
     db.execute(stmt)
